@@ -1,0 +1,14 @@
+# enviroment
+.env
+*.env
+!.env.example
+
+# app data
+data/
+*/data/
+*/config/
+
+# keys/certs
+*.key
+*.pem
+*.crt
