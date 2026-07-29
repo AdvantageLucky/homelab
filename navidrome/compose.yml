@@ -1,5 +1,6 @@
 services:
   navidrome:
+    container_name: navidrome 
     image: deluan/navidrome:latest
     user: 1000:1000
     ports:
@@ -16,3 +17,9 @@ services:
     volumes:
       - "./data:/data"
       - "${HOME}/music:/music:ro"
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true

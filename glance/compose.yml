@@ -1,0 +1,25 @@
+services:
+  glance:
+    container_name: glance
+    image: glanceapp/glance
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "${TAILSCALE_IP}:8080:8080"
+    restart: unless-stopped
+    env_file: .env 
+    volumes:
+      - "./config:/app/config"
+      - "./assets:/app/assets"
+      - "/etc/localtime:/etc/localtime:ro"
+      # docker containers widget
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      # cpu/ram/temp/sensors/storage stats
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+      - "/:/host/root:ro"
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true
