@@ -1,0 +1,106 @@
+theme:
+  background-color: 225 14 15
+  primary-color: 157 47 65
+  contrast-multiplier: 1.1
+
+pages:
+  - name: Home
+    hide-desktop-navigation: true
+    columns:
+      - size: small
+        widgets:
+          - type: clock
+            hour-format: 24h
+            timezones:
+              - timezone: America/Mexico_City
+                label: Puebla
+
+          - type: server-stats
+            servers:
+              - type: local
+                name: homelab
+                hide-swap: true
+
+          - type: weather
+            location: Puebla, Mexico
+            units: metric
+            hour-format: 24h
+
+          - type: custom-api
+            title: Last.fm
+            cache: 5m
+            url: https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=8
+            template: |
+              <ul class="list list-gap-10 collapsible-container" data-collapse-after="5">
+                {{ range .JSON.Array "recenttracks.track" }}
+                <li>
+                  <a class="size-h4 color-highlight block text-truncate" href="{{ .String "url" }}" target="_blank" rel="noreferrer">{{ .String "name" }}</a>
+                  <div class="text-truncate">{{ .String "artist.#text" }}</div>
+                </li>
+                {{ end }}
+              </ul>
+
+      - size: full
+        widgets:
+          - type: search
+            search-engine: duckduckgo
+            new-tab: true
+            autofocus: true
+
+          - type: monitor
+            title: Services
+            cache: 1m
+            sites:
+              - title: Navidrome
+                url: ${TAILSCALE_HOST}:4533
+                check-url: http://navidrome:4533
+                icon: di:navidrome
+
+          - type: docker-containers
+            hide-by-default: false
+            sort-by: state
+
+          - type: rss
+            title: Feed
+            limit: 25
+            collapse-after: 8
+            cache: 30m
+            feeds:
+              - url: https://www.reddit.com/r/selfhosted/.rss
+                title: r/selfhosted
+              - url: https://www.reddit.com/r/homelab/.rss
+                title: r/homelab
+              - url: https://lobste.rs/rss
+                title: Lobsters
+              - url: https://news.ycombinator.com/rss
+                title: Hacker News
+
+      - size: small
+        widgets:
+          - type: custom-api
+            title: Tailscale
+            cache: 10m
+            url: https://api.tailscale.com/api/v2/tailnet/-/devices
+            headers:
+              Authorization: Bearer ${TAILSCALE_API_KEY}
+            template: |
+              <ul class="list list-gap-10 collapsible-container" data-collapse-after="5">
+                {{ range .JSON.Array "devices" }}
+                <li class="flex items-center gap-10">
+                  <span class="{{ if .Bool "online" }}color-positive{{ else }}color-negative{{ end }}">●</span>
+                  <span class="text-truncate">{{ .String "hostname" }}</span>
+                </li>
+                {{ end }}
+              </ul>
+
+          - type: hacker-news
+            limit: 15
+            collapse-after: 6
+
+          - type: releases
+            cache: 6h
+            repositories:
+              - navidrome/navidrome
+              - glanceapp/glance
+              - vaultwarden/vaultwarden
+              - tailscale/tailscale

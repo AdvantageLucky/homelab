@@ -6,7 +6,6 @@
 # app data
 data/
 */data/
-*/config/
 
 # keys/certs
 *.key
