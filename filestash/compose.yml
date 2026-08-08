@@ -1,0 +1,25 @@
+services:
+  filestash:
+    container_name: filestash
+    image: machines/filestash:latest
+    ports:
+      - "127.0.0.1:8334:8334"
+      - "${TAILSCALE_IP}:8334:8334"
+    restart: unless-stopped 
+    env_file: .env
+    environment:
+      APPLICATION_URL: "${TAILSCALE_IP}:8334"
+    volumes:
+      - "filestash_state:/app/data/state/"
+      - "${MUSIC_DIR}:/app/data/files/music/"
+      - "${DOCUMENTS_DIR}:/app/data/files/documents/"
+      - "${IMAGES_DIR}:/app/data/files/images/"
+    networks:
+      - homelab
+
+volumes:
+  filestash_state:
+
+networks:
+  homelab:
+    external: true
