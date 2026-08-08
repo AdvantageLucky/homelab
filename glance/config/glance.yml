@@ -55,6 +55,10 @@ pages:
                 url: ${TAILSCALE_HOST}:4533
                 check-url: http://navidrome:4533
                 icon: di:navidrome
+              - title: Syncthing
+                url: ${TAILSCALE_HOST}:8384
+                check-url: http://syncthing:8384
+                icon: di:syncthing
 
           - type: docker-containers
             hide-by-default: false
