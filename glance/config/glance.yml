@@ -59,6 +59,10 @@ pages:
                 url: ${TAILSCALE_HOST}:8384
                 check-url: http://syncthing:8384
                 icon: di:syncthing
+              - title: Filestash
+                url: ${TAILSCALE_HOST}:8334
+                check-url: http://filestash:8334
+                icon: di:filestash
 
           - type: docker-containers
             hide-by-default: false
