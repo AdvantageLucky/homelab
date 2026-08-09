@@ -4,7 +4,6 @@ services:
     image: syncthing/syncthing
     ports:
       - "127.0.0.1:8384:8384"
-      - "${TAILSCALE_IP}:8384:8384"
       - "${TAILSCALE_IP}:22000:22000/tcp"
       - "${TAILSCALE_IP}:22000:22000/udp"
       - "${TAILSCALE_IP}:21027:21027/udp"
