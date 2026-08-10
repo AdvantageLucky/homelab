@@ -63,6 +63,10 @@ pages:
                 url: ${TAILSCALE_HOST}:8334
                 check-url: http://filestash:8334
                 icon: di:filestash
+              - title: Vaultwarden
+                url: ${TAILSCALE_HOST}
+                check-url: http://vaultwarden:80/alive
+                icon: di:vaultwarden
 
           - type: docker-containers
             hide-by-default: false

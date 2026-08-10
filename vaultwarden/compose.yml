@@ -1,0 +1,19 @@
+services:
+  vaultwarden:
+    container_name: vaultwarden
+    image: vaultwarden/server:latest
+    ports:
+      - "127.0.0.1:8000:80"
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DOMAIN: "${TAILSCALE_DOMAIN}"
+    volumes:
+      - "./vw-data/:/data/"
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true
