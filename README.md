@@ -1,5 +1,5 @@
 # Personal Homelab
-Self-hosted infra on a *Lenovo ThinkCentre M720q*, using docker for services and Tailscale for secure remote access.
+Self-hosted infra on a *Lenovo ThinkCentre M720q*, using Docker for services and Tailscale for secure remote access.
 
 Original goal was to be able to listen to my own music, but then the goal was expanded: own my data, learn infraestructure/DevOps, hands-on, and have files, tools and music available eanywhere without exposing everything to the internet
 
@@ -7,7 +7,7 @@ Original goal was to be able to listen to my own music, but then the goal was ex
 - **Machine**: Lenovo ThinkCentre M720q Tiny
 - **CPU**: Intel Core i3-8100T (4 cores, 35W TDP)
 - **RAM**: 8 GB DDR4
-- **Storage**: 256 GB SATA SDD
+- **Storage**: 256 GB SATA SSD
 - **OS**: Debian 13 Trixie, headless
 
 ## Architecture 
@@ -23,6 +23,9 @@ All services run as Docker containers and remote access goes exclusively through
 | Vaultwarden | Self-Hosted personal vault |
 | Glance | Dashboard |
 
+## Backup
+All important data is backed up using restic, backblaze B2 and healthchecks.io. restic handles backup automation, backblaze B2 handles bucket-like cloud storage, and healthchecks.io pushes notifications for backup events such as backups/errors
+
 ## Networking
 - Static IP on the LAN via NetworkManager
 - Remote access through Tailscale with MagicDNS
@@ -33,4 +36,5 @@ Each service is self-contained. To bring one up:
 ```bash
 cd <service>
 docker compose up -d
+tailscale serve --bg --https=PORT http://127.0.0.1:PORT
 ```
