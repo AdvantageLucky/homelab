@@ -1,0 +1,36 @@
+services:
+  broker:
+    image: docker.io/valkey/valkey:9-alpine
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    networks:
+      - homelab
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    depends_on:
+      - broker
+    ports:
+      - "8050:8000"
+    restart: unless-stopped
+    env_file: 
+      - .env
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBENGINE: sqlite
+    volumes:
+      - "data:/usr/src/paperless/data"
+      - "./media:/usr/src/paperless/media"
+      - "./export:/usr/src/paperless/export"
+      - "./consume:/usr/src/paperless/consume"
+    networks:
+      - homelab
+
+volumes:
+  data:
+  redisdata:
+
+networks:
+  homelab:
+    external: true

@@ -17,3 +17,8 @@ syncthing/config/
 
 # vaultwarden
 vaultwarden/vw-data/
+
+# paperless-ngx
+paperless-ngx/consume/
+paperless-ngx/export/
+paperless-ngx/media/
