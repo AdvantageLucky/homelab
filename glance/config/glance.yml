@@ -52,20 +52,16 @@ pages:
             cache: 1m
             sites:
               - title: Navidrome
-                url: ${TAILSCALE_HOST}:4533
-                check-url: http://navidrome:4533
+                url: ${TAILSCALE_HOST}:${NAVIDROME_EXT_PORT}
+                check-url: http://navidrome:${NAVIDROME_INT_PORT}
                 icon: di:navidrome
               - title: Syncthing
-                url: ${TAILSCALE_HOST}:8384
-                check-url: http://syncthing:8384
+                url: ${TAILSCALE_HOST}:${SYNCTHING_PORT}
+                check-url: http://syncthing:${SYNCTHING_PORT}
                 icon: di:syncthing
-              - title: Filestash
-                url: ${TAILSCALE_HOST}:8334
-                check-url: http://filestash:8334
-                icon: di:filestash
               - title: Vaultwarden
                 url: ${TAILSCALE_HOST}
-                check-url: http://vaultwarden:80/alive
+                check-url: http://vaultwarden:${VAULTWARDEN_PORT}/alive
                 icon: di:vaultwarden
 
           - type: docker-containers
