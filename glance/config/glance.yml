@@ -63,6 +63,10 @@ pages:
                 url: ${TAILSCALE_HOST}
                 check-url: http://vaultwarden:${VAULTWARDEN_PORT}/alive
                 icon: di:vaultwarden
+              - title: Photoview
+                url: ${TAILSCALE_HOST}:${PHOTOVIEW_EXT_PORT}
+                check-url: http://photoview:${PHOTOVIEW_INT_PORT}
+                icon: di:photoview
 
           - type: docker-containers
             hide-by-default: false

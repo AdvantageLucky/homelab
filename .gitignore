@@ -22,3 +22,7 @@ vaultwarden/vw-data/
 paperless-ngx/consume/
 paperless-ngx/export/
 paperless-ngx/media/
+
+# photoview
+photoview/database/
+photoview/storage/

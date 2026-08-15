@@ -1,0 +1,54 @@
+services:
+  photoview-prepare:
+    container_name: photoview-prepare
+    hostname: photoview-prepare
+    image: photoview/photoview:2
+    labels:
+      - "glance.hide=true"
+    network_mode: "none"
+    user: root
+    entrypoint: []
+    command: /bin/bash -c "sleep 1 && chown -R photoview:photoview /home/photoview/media-cache"
+    cap_add:
+      - CHOWN
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "${HOST_PHOTOVIEW_LOCATION}/storage:/home/photoview/media-cache"
+
+  photoview:
+    container_name: photoview
+    hostname: photoview
+    image: photoview/photoview:2
+    restart: unless-stopped
+    stop_grace_period: 10s
+    ports:
+      - "127.0.0.1:8020:80"
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    env_file: .env
+    environment:
+      PHOTOVIEW_DATABASE_DRIVER: ${PHOTOVIEW_DATABASE_DRIVER}
+      PHOTOVIEW_SQLITE_PATH: ${PHOTOVIEW_SQLITE_PATH}
+      PHOTOVIEW_LISTEN_IP: ${PHOTOVIEW_LISTEN_IP}
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "${HOST_PHOTOVIEW_LOCATION}/database:/home/photoview/database"
+      - "${HOST_PHOTOVIEW_LOCATION}/storage:/home/photoview/media-cache"
+      - "${HOST_PHOTOVIEW_MEDIA_ROOT}:/photos:ro"
+    networks:
+      - ui_net
+      - api_db_net
+      - homelab
+
+networks:
+  ui_net:
+    driver: bridge
+
+  api_db_net:
+    internal: true
+
+  homelab:
+    external: true
