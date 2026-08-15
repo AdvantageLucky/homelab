@@ -21,6 +21,7 @@ All services run as Docker containers and remote access goes exclusively through
 | Syncthing | File sync across devices |
 | Filestash | File manager in browser |
 | Vaultwarden | Self-Hosted personal vault |
+| Photoview | Self-Hosted photo gallery |
 | Glance | Dashboard |
 
 ## Backup
