@@ -55,18 +55,18 @@ pages:
                 url: ${TAILSCALE_HOST}:${NAVIDROME_EXT_PORT}
                 check-url: http://navidrome:${NAVIDROME_INT_PORT}
                 icon: di:navidrome
-              - title: Syncthing
-                url: ${TAILSCALE_HOST}:${SYNCTHING_PORT}
-                check-url: http://syncthing:${SYNCTHING_PORT}
-                icon: di:syncthing
-              - title: Vaultwarden
-                url: ${TAILSCALE_HOST}
-                check-url: http://vaultwarden:${VAULTWARDEN_PORT}/alive
-                icon: di:vaultwarden
               - title: Photoview
                 url: ${TAILSCALE_HOST}:${PHOTOVIEW_EXT_PORT}
                 check-url: http://photoview:${PHOTOVIEW_INT_PORT}
                 icon: di:photoview
+              - title: Syncthing
+                url: ${TAILSCALE_HOST}:${SYNCTHING_EXT_PORT}
+                check-url: http://syncthing:${SYNCTHING_INT_PORT}
+                icon: di:syncthing
+              - title: Vaultwarden
+                url: ${TAILSCALE_HOST}:${VAULTWARDEN_EXT_PORT}
+                check-url: http://vaultwarden:${VAULTWARDEN_INT_PORT}/alive
+                icon: di:vaultwarden
 
           - type: docker-containers
             hide-by-default: false

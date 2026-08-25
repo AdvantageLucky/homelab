@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 10s
     ports:
-      - "127.0.0.1:8020:80"
+      - "127.0.0.1:8030:80"
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined

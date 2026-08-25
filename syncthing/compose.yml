@@ -3,7 +3,7 @@ services:
     container_name: syncthing
     image: syncthing/syncthing
     ports:
-      - "127.0.0.1:8384:8384"
+      - "127.0.0.1:8020:8384"
       - "${TAILSCALE_IP}:22000:22000/tcp"
       - "${TAILSCALE_IP}:22000:22000/udp"
       - "${TAILSCALE_IP}:21027:21027/udp"
@@ -21,7 +21,8 @@ services:
       - .env
     volumes:
       - "./config:/config"
-      - "${HOME}/${SYNCTHING_PATH}:/data1"
+      - "${SYNCTHING_PATH1}:/data1"
+      - "${SYNCTHING_PATH2}:/data2"
     networks:
       - homelab
 

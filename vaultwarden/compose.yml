@@ -3,7 +3,7 @@ services:
     container_name: vaultwarden
     image: vaultwarden/server:latest
     ports:
-      - "127.0.0.1:8000:80"
+      - "127.0.0.1:8010:80"
     restart: unless-stopped
     env_file:
       - .env
