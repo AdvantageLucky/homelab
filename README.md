@@ -19,7 +19,6 @@ All services run as Docker containers and remote access goes exclusively through
 | Tailscale | Secure remote access (mesh VPN) |
 | Navidrome | Music streaming server |
 | Syncthing | File sync across devices |
-| Filestash | File manager in browser |
 | Vaultwarden | Self-Hosted personal vault |
 | Photoview | Self-Hosted photo gallery |
 | Glance | Dashboard |
