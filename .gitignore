@@ -26,3 +26,6 @@ paperless-ngx/media/
 # photoview
 photoview/database/
 photoview/storage/
+
+# minecraft world
+minecraft/data/
