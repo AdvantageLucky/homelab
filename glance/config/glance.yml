@@ -67,10 +67,10 @@ pages:
                 url: ${TAILSCALE_HOST}:${VAULTWARDEN_EXT_PORT}
                 check-url: http://vaultwarden:${VAULTWARDEN_INT_PORT}/alive
                 icon: di:vaultwarden
-              - title: Minecraft Server
-                url: ${TAILSCALE_HOST}:${MINECRAFT_SERVER_EXT_PORT}
-                check-url: http://mc-health:${MINECRAFT_SERVER_INT_PORT}
-                icon: di:minecraft
+              - title: Forgejo
+                url: ${TAILSCALE_HOST}:${FORGEJO_EXT_PORT}
+                check-url: http://forgejo:${FORGEJO_INT_PORT}/api/healthz
+                icon: di:forgejo
 
           - type: docker-containers
             hide-by-default: false
@@ -118,5 +118,5 @@ pages:
             repositories:
               - navidrome/navidrome
               - glanceapp/glance
-              - vaultwarden/vaultwarden
+              - dani-garcia/vaultwarden
               - tailscale/tailscale
