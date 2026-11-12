@@ -2,6 +2,10 @@ services:
   forgejo:
     image: codeberg.org/forgejo/forgejo:17
     container_name: forgejo
+    labels:
+      - "glance.name=Forgejo"
+      - "glance.icon=si:forgejo"
+      - "glance.description=Git self-hosted server"
     restart: unless-stopped
     ports:
       - "127.0.0.1:8040:3000"

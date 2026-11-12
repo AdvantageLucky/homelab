@@ -18,6 +18,10 @@ services:
 
   photoview:
     container_name: photoview
+    labels:
+      - "glance.name=Photoview"
+      - "glance.icon=mdi:image-multiple"
+      - "glance.description=Photo Gallery"
     hostname: photoview
     image: photoview/photoview:2
     restart: unless-stopped

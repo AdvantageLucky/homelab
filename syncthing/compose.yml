@@ -1,6 +1,10 @@
 services:
   syncthing:
     container_name: syncthing
+    labels:
+      - "glance.name=Syncthing"
+      - "glance.icon=si:syncthing"
+      - "glance.description=File synchronization"
     image: syncthing/syncthing
     ports:
       - "127.0.0.1:8020:8384"

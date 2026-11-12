@@ -1,6 +1,10 @@
 services:
   vaultwarden:
     container_name: vaultwarden
+    labels:
+      - "glance.name=Vaultwarden"
+      - "glance.icon=si:vaultwarden"
+      - "glance.description=Password vault"
     image: vaultwarden/server:latest
     ports:
       - "127.0.0.1:8010:80"

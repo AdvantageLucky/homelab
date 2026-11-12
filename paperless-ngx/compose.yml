@@ -9,6 +9,10 @@ services:
 
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    labels:
+      - "glance.name=Paperless-ngx"
+      - "glance.icon=mdi:file-document-multiple"
+      - "glance.description=OCR document manager"
     depends_on:
       - broker
     ports:

@@ -1,30 +1,51 @@
 theme:
-  background-color: 225 14 15
-  primary-color: 157 47 65
-  contrast-multiplier: 1.1
+  background-color: 240 21 15
+  contrast-multiplier: 1.2
+  primary-color: 217 92 83
+  positive-color: 115 54 76
+  negative-color: 347 70 65
 
 pages:
-  - name: Home
+  - name: MiniLaika 
     hide-desktop-navigation: true
+    show-mobile-header: true
+
     columns:
       - size: small
         widgets:
           - type: clock
-            hour-format: 24h
-            timezones:
-              - timezone: America/Mexico_City
-                label: Puebla
+            hour-format: 12h
 
           - type: server-stats
             servers:
               - type: local
-                name: homelab
+                hide-mountpoints-by-default: true
+                mountpoints:
+                  "/":
+                    name: Root
+                    hide: false
+
+                name: MiniLaika
                 hide-swap: true
 
-          - type: weather
-            location: Puebla, Mexico
-            units: metric
-            hour-format: 24h
+          - type: custom-api
+            title: Weather Forecast
+            cache: 1h
+            url: https://api.open-meteo.com/v1/forecast?latitude=19.22&longitude=-98.23&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=America%2FMexico_City
+            template: |
+              <div class="flex justify-between text-center">
+              {{ range $i, $d := .JSON.Array "daily.time" }}
+                {{ $max := $.JSON.Float (printf "daily.temperature_2m_max.%d" $i) }}
+                {{ $min := $.JSON.Float (printf "daily.temperature_2m_min.%d" $i) }}
+                {{ $code := $.JSON.Int (printf "daily.weather_code.%d" $i) }}
+                <div>
+                  <div class="size-h6">{{ printf "%.3s" (parseTime "DateOnly" ($.JSON.String (printf "daily.time.%d" $i))).Weekday.String }}</div>
+                  <div>{{ if ge $code 71 }}❄️{{ else if ge $code 51 }}🌧️{{ else if ge $code 2 }}☁️{{ else }}☀️{{ end }}</div>
+                  <div class="color-highlight">{{ printf "%.0f" $max }}°</div>
+                  <div>{{ printf "%.0f" $min }}°</div>
+                </div>
+              {{ end }}
+              </div>
 
           - type: custom-api
             title: Last.fm
@@ -43,12 +64,13 @@ pages:
       - size: full
         widgets:
           - type: search
-            search-engine: duckduckgo
-            new-tab: true
+            title: Buscador
+            search-engine: google
             autofocus: true
+            placeholder: Escribe aqui para buscar...
 
           - type: monitor
-            title: Services
+            title: Servicios
             cache: 1m
             sites:
               - title: Navidrome
@@ -77,19 +99,17 @@ pages:
             sort-by: state
 
           - type: rss
-            title: Feed
-            limit: 25
-            collapse-after: 8
-            cache: 30m
+            title: Noticias
+            limit: 12
+            collapse-after: 6
+            cache: 2h
             feeds:
-              - url: https://www.reddit.com/r/selfhosted/.rss
-                title: r/selfhosted
-              - url: https://www.reddit.com/r/homelab/.rss
-                title: r/homelab
-              - url: https://lobste.rs/rss
-                title: Lobsters
-              - url: https://news.ycombinator.com/rss
-                title: Hacker News
+              - url: https://archlinux.org/feeds/news/
+                title: Arch Linux
+              - url: https://selfh.st/rss/
+                title: selfh.st
+              - url: https://lwn.net/headlines/rss
+                title: LWN
 
       - size: small
         widgets:
@@ -109,14 +129,15 @@ pages:
                 {{ end }}
               </ul>
 
+          - type: custom-api
+            title: xkcd
+            cache: 2m
+            url: https://xkcd.com/info.0.json
+            template: |
+              <body> {{ .JSON.String "title" }}</body>
+              <img src="{{ .JSON.String "img" }}"></img>
+
           - type: hacker-news
             limit: 15
             collapse-after: 6
 
-          - type: releases
-            cache: 6h
-            repositories:
-              - navidrome/navidrome
-              - glanceapp/glance
-              - dani-garcia/vaultwarden
-              - tailscale/tailscale

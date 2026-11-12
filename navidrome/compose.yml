@@ -1,6 +1,10 @@
 services:
   navidrome:
     container_name: navidrome 
+    labels:
+      - "glance.name=Navidrome"
+      - "glance.icon=mdi:music"
+      - "glance.description=Music streaming server" 
     image: deluan/navidrome:latest
     user: 1000:1000
     ports:
