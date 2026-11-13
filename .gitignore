@@ -18,14 +18,13 @@ syncthing/config/
 # vaultwarden
 vaultwarden/vw-data/
 
-# paperless-ngx
-paperless-ngx/consume/
-paperless-ngx/export/
-paperless-ngx/media/
-
 # photoview
 photoview/database/
 photoview/storage/
 
-# minecraft world
-minecraft/data/
+# forgejo 
+forgejo/data
+
+# calibre-web-automated
+calibre-web-automated/config
+calibre-web-automated/plugins
