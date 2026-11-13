@@ -21,7 +21,7 @@ All services run as Docker containers and remote access goes exclusively through
 | Syncthing | File sync across devices |
 | Vaultwarden | Self-Hosted personal vault |
 | Photoview | Self-Hosted photo gallery |
-| Minecraft-Server | Self-Hosted MC server |
+| Forgejo | Self-Hosted Git server |
 | Glance | Dashboard |
 
 ## Backup
