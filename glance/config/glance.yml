@@ -77,6 +77,10 @@ pages:
                 url: ${TAILSCALE_HOST}:${NAVIDROME_EXT_PORT}
                 check-url: http://navidrome:${NAVIDROME_INT_PORT}
                 icon: di:navidrome
+              - title: Calibre Web Automated
+                url: ${TAILSCALE_HOST}:${CALIBRE_EXT_PORT}
+                check-url: http://calibre-web-automated:${CALIBRE_INT_PORT}
+                icon: di:calibre
               - title: Photoview
                 url: ${TAILSCALE_HOST}:${PHOTOVIEW_EXT_PORT}
                 check-url: http://photoview:${PHOTOVIEW_INT_PORT}
