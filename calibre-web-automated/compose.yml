@@ -1,0 +1,28 @@
+services:
+  calibre-web-automated:
+    image: crocodilestick/calibre-web-automated:latest
+    container_name: calibre-web-automated
+    labels:
+      - "glance.name=Calibre-Web Automated"
+      - "glance.icon=si:calibreweb"
+      - "glance.url=${TAILSCALE_HOST}:${CWA_PORT}"
+      - "glance.description=Ebook library"
+    ports:
+      - "127.0.0.1:${CWA_PORT}:8083"
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Mexico_City
+      - HARDCOVER_TOKEN=${HARDCOVER_KEY}
+    volumes:
+      - "./config:/config"
+      - "${HOME}/books/ingest:/cwa-book-ingest"
+      - "${HOME}/books/library:/calibre-library"
+      - "./plugins:/config/.config/calibre/plugins"
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true
