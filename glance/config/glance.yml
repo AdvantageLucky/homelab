@@ -24,6 +24,9 @@ pages:
                   "/":
                     name: Root
                     hide: false
+                  ${DISK_PATH}:
+                    name: HGST
+                    hide: false
 
                 name: MiniLaika
                 hide-swap: true
@@ -102,6 +105,10 @@ pages:
                 url: ${TAILSCALE_HOST}:${FORGEJO_EXT_PORT}
                 check-url: http://forgejo:${FORGEJO_INT_PORT}/api/healthz
                 icon: di:forgejo
+              - title: Uptime Kuma
+                url: ${TAILSCALE_HOST}:${UPTIME_KUMA_EXT_PORT}
+                check-url: http://uptime-kuma:${UPTIME_KUMA_INT_PORT}
+                icon: di:uptime-kuma 
 
           - type: docker-containers
             hide-by-default: false
@@ -165,7 +172,82 @@ pages:
                 </ul>
               </div>
 
-          - type: hacker-news
-            limit: 15
-            collapse-after: 6
+          - type: custom-api
+            title: Servicios (Kuma)
+            cache: 1m
+            url: http://uptime-kuma:3001/api/status-page/homelab
+            subrequests:
+              hb:
+                url: http://uptime-kuma:3001/api/status-page/heartbeat/homelab
+            template: |
+              {{ $hb := .Subrequest "hb" }}{{ $newest := "" }}
+              <ul class="list list-gap-10">
+              {{ range .JSON.Array "publicGroupList.0.monitorList" }}{{ if ne (.String "type") "group" }}
+                {{ $id := .Int "id" }}{{ $name := .String "name" }}{{ $url := "${TAILSCALE_HOST}:8070/status/homelab" }}{{ if eq $name "Navidrome" }}{{ $url = "${TAILSCALE_HOST}" }}{{ else if eq $name "Vaultwarden" }}{{ $url = "${TAILSCALE_HOST}:${VAULTWARDEN_EXT_PORT}" }}{{ else if eq $name "Syncthing" }}{{ $url = "${TAILSCALE_HOST}:${SYNCTHING_EXT_PORT}" }}{{ else if eq $name "Photoview" }}{{ $url = "${TAILSCALE_HOST}:${PHOTOVIEW_EXT_PORT}" }}{{ else if eq $name "Forgejo" }}{{ $url = "${TAILSCALE_HOST}:${FORGEJO_EXT_PORT}" }}{{ else if eq $name "Calibre Web Automated" }}{{ $url = "${TAILSCALE_HOST}:${CALIBRE_EXT_PORT}" }}{{ else if or (eq $name "Frigate") (eq $name "Frigate Casa Bolillo Techo") }}{{ $url = "${TAILSCALE_HOST}:${FRIGATE_EXT_PORT}" }}{{ else if eq $name "Glance" }}{{ $url = "${TAILSCALE_HOST}:8080" }}{{ end }}{{ $beats := $hb.JSON.Array (printf "heartbeatList.%d" $id) }}{{ $ping := 0 }}
+                <li>
+                  <a href="{{ $url }}" target="_blank" rel="noreferrer" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;">
+                    <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $name }}</span>
+                    <div style="display:flex;justify-content:flex-end;overflow:hidden;width:90px;height:14px;gap:2px;">
+                      {{ range $beats }}{{ $s := .Int "status" }}<span style="flex:0 0 3px;height:100%;border-radius:1px;background:{{ if eq $s 1 }}var(--color-positive){{ else if eq $s 0 }}var(--color-negative){{ else }}var(--color-warning){{ end }};"></span>{{ $ping = .Int "ping" }}{{ $t := .String "time" }}{{ if gt $t $newest }}{{ $newest = $t }}{{ end }}{{ end }}
+                    </div>
+                    <span class="color-subdue" style="width:44px;text-align:right;">{{ if gt $ping 999 }}{{ printf "%.0fs" (div (toFloat $ping) 1000.0) }}{{ else if gt $ping 0 }}{{ $ping }}ms{{ else }}-{{ end }}</span>
+                    <span style="width:54px;text-align:right;">{{ printf "%.1f" (mul ($hb.JSON.Float (printf "uptimeList.%d_24" $id)) 100.0) }}%</span>
+                  </a>
+                </li>
+              {{ end }}{{ end }}
+              </ul>
+              <p class="size-h6 color-subdue" style="margin-top:10px;">newest beat {{ $newest }} UTC</p>
+
+          - type: custom-api
+            title: Backups (Kuma)
+            cache: 1m
+            url: http://uptime-kuma:3001/api/status-page/homelab
+            subrequests:
+              hb:
+                url: http://uptime-kuma:3001/api/status-page/heartbeat/homelab
+            template: |
+              {{ $hb := .Subrequest "hb" }}{{ $newest := "" }}
+              <ul class="list list-gap-10">
+              {{ range .JSON.Array "publicGroupList.1.monitorList" }}{{ if ne (.String "type") "group" }}
+                {{ $id := .Int "id" }}{{ $name := .String "name" }}{{ $url := "${TAILSCALE_HOST}:8070/status/homelab" }}{{ if eq $name "Navidrome" }}{{ $url = "${TAILSCALE_HOST}" }}{{ else if eq $name "Vaultwarden" }}{{ $url = "${TAILSCALE_HOST}:${VAULTWARDEN_EXT_PORT}" }}{{ else if eq $name "Syncthing" }}{{ $url = "${TAILSCALE_HOST}:${SYNCTHING_EXT_PORT}" }}{{ else if eq $name "Photoview" }}{{ $url = "${TAILSCALE_HOST}:${PHOTOVIEW_EXT_PORT}" }}{{ else if eq $name "Forgejo" }}{{ $url = "${TAILSCALE_HOST}:${FORGEJO_EXT_PORT}" }}{{ else if eq $name "Calibre Web Automated" }}{{ $url = "${TAILSCALE_HOST}:${CALIBRE_EXT_PORT}" }}{{ else if or (eq $name "Frigate") (eq $name "Frigate Casa Bolillo Techo") }}{{ $url = "${TAILSCALE_HOST}:${FRIGATE_EXT_PORT}" }}{{ else if eq $name "Glance" }}{{ $url = "${TAILSCALE_HOST}:8080" }}{{ end }}{{ $beats := $hb.JSON.Array (printf "heartbeatList.%d" $id) }}{{ $ping := 0 }}
+                <li>
+                  <a href="{{ $url }}" target="_blank" rel="noreferrer" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;">
+                    <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $name }}</span>
+                    <div style="display:flex;justify-content:flex-end;overflow:hidden;width:90px;height:14px;gap:2px;">
+                      {{ range $beats }}{{ $s := .Int "status" }}<span style="flex:0 0 3px;height:100%;border-radius:1px;background:{{ if eq $s 1 }}var(--color-positive){{ else if eq $s 0 }}var(--color-negative){{ else }}var(--color-warning){{ end }};"></span>{{ $ping = .Int "ping" }}{{ $t := .String "time" }}{{ if gt $t $newest }}{{ $newest = $t }}{{ end }}{{ end }}
+                    </div>
+                    <span class="color-subdue" style="width:44px;text-align:right;">{{ if gt $ping 999 }}{{ printf "%.0fs" (div (toFloat $ping) 1000.0) }}{{ else if gt $ping 0 }}{{ $ping }}ms{{ else }}-{{ end }}</span>
+                    <span style="width:54px;text-align:right;">{{ printf "%.1f" (mul ($hb.JSON.Float (printf "uptimeList.%d_24" $id)) 100.0) }}%</span>
+                  </a>
+                </li>
+              {{ end }}{{ end }}
+              </ul>
+              <p class="size-h6 color-subdue" style="margin-top:10px;">newest beat {{ $newest }} UTC</p>
+
+          - type: custom-api
+            title: Mantenimiento (Kuma)
+            cache: 1m
+            url: http://uptime-kuma:3001/api/status-page/homelab
+            subrequests:
+              hb:
+                url: http://uptime-kuma:3001/api/status-page/heartbeat/homelab
+            template: |
+              {{ $hb := .Subrequest "hb" }}{{ $newest := "" }}
+              <ul class="list list-gap-10">
+              {{ range .JSON.Array "publicGroupList.2.monitorList" }}{{ if ne (.String "type") "group" }}
+                {{ $id := .Int "id" }}{{ $name := .String "name" }}{{ $url := "${TAILSCALE_HOST}:8070/status/homelab" }}{{ if eq $name "Navidrome" }}{{ $url = "${TAILSCALE_HOST}" }}{{ else if eq $name "Vaultwarden" }}{{ $url = "${TAILSCALE_HOST}:${VAULTWARDEN_EXT_PORT}" }}{{ else if eq $name "Syncthing" }}{{ $url = "${TAILSCALE_HOST}:${SYNCTHING_EXT_PORT}" }}{{ else if eq $name "Photoview" }}{{ $url = "${TAILSCALE_HOST}:${PHOTOVIEW_EXT_PORT}" }}{{ else if eq $name "Forgejo" }}{{ $url = "${TAILSCALE_HOST}:${FORGEJO_EXT_PORT}" }}{{ else if eq $name "Calibre Web Automated" }}{{ $url = "${TAILSCALE_HOST}:${CALIBRE_EXT_PORT}" }}{{ else if or (eq $name "Frigate") (eq $name "Frigate Casa Bolillo Techo") }}{{ $url = "${TAILSCALE_HOST}:${FRIGATE_EXT_PORT}" }}{{ else if eq $name "Glance" }}{{ $url = "${TAILSCALE_HOST}:8080" }}{{ end }}{{ $beats := $hb.JSON.Array (printf "heartbeatList.%d" $id) }}{{ $ping := 0 }}
+                <li>
+                  <a href="{{ $url }}" target="_blank" rel="noreferrer" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;">
+                    <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $name }}</span>
+                    <div style="display:flex;justify-content:flex-end;overflow:hidden;width:90px;height:14px;gap:2px;">
+                      {{ range $beats }}{{ $s := .Int "status" }}<span style="flex:0 0 3px;height:100%;border-radius:1px;background:{{ if eq $s 1 }}var(--color-positive){{ else if eq $s 0 }}var(--color-negative){{ else }}var(--color-warning){{ end }};"></span>{{ $ping = .Int "ping" }}{{ $t := .String "time" }}{{ if gt $t $newest }}{{ $newest = $t }}{{ end }}{{ end }}
+                    </div>
+                    <span class="color-subdue" style="width:44px;text-align:right;">{{ if gt $ping 999 }}{{ printf "%.0fs" (div (toFloat $ping) 1000.0) }}{{ else if gt $ping 0 }}{{ $ping }}ms{{ else }}-{{ end }}</span>
+                    <span style="width:54px;text-align:right;">{{ printf "%.1f" (mul ($hb.JSON.Float (printf "uptimeList.%d_24" $id)) 100.0) }}%</span>
+                  </a>
+                </li>
+              {{ end }}{{ end }}
+              </ul>
+              <p class="size-h6 color-subdue" style="margin-top:10px;">newest beat {{ $newest }} UTC</p>
+
 

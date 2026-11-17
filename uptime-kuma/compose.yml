@@ -1,0 +1,38 @@
+services:
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma:2
+    restart: unless-stopped
+    labels:
+      - "glance.name=Uptiem Kuma"
+      - "glance.icon=mdi:account-wrench"
+      - "glance.description=Monitoring tool"
+    ports:
+      - "127.0.0.1:${UPTIME_KUMA_UI_PORT}:3001" 
+    env_file:
+        - .env
+    environment:
+      TZ: "America/Mexico_City"
+      UMASK: "0022"
+    volumes:
+      - "./data:/app/data"
+    networks:
+      - kuma_network
+      - homelab
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  kuma_network:
+    driver: bridge
+  homelab:
+    external: true

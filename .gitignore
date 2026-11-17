@@ -30,3 +30,6 @@ calibre-web-automated/config
 
 #frigate
 frigate/config/
+
+#uptime kuma
+uptime-kuma/data
