@@ -77,6 +77,11 @@ pages:
                 url: ${TAILSCALE_HOST}:${NAVIDROME_EXT_PORT}
                 check-url: http://navidrome:${NAVIDROME_INT_PORT}
                 icon: di:navidrome
+              - title: Frigate
+                url: ${TAILSCALE_HOST}:${FRIGATE_EXT_PORT}
+                check-url: https://frigate:${FRIGATE_INT_PORT}
+                allow-insecure: true
+                icon: di:frigate
               - title: Calibre Web Automated
                 url: ${TAILSCALE_HOST}:${CALIBRE_EXT_PORT}
                 check-url: http://calibre-web-automated:${CALIBRE_INT_PORT}
@@ -134,12 +139,31 @@ pages:
               </ul>
 
           - type: custom-api
-            title: xkcd
-            cache: 2m
-            url: https://xkcd.com/info.0.json
+            title: Frigate
+            url: ${FRIGATE_URL} 
+            allow-insecure: true
+            skip-tls-verify: true
+            cache: 30s
             template: |
-              <body> {{ .JSON.String "title" }}</body>
-              <img src="{{ .JSON.String "img" }}"></img>
+              <div style="padding: 1rem;">
+                <ul style="list-style: none; padding: 0; margin: 0; gap: 10px;">
+                  <li>
+                    <div style="padding-bottom: 1rem;">
+                      <a style="color: var(--color-primary); font-weight: bold; text-decoration: none;" href="https://${FRIGATE_URL}" target="_blank" rel="noreferrer" title="Frigate Dashboard">Last 24 Hours Activity</a>
+                    </div>
+                    <ul style="list-style: none; padding: 0; margin: 0; gap: 10px;">
+                      <li style="display: flex; gap: 1rem; margin-bottom: 8px;">
+                        <span style="color: var(--color-negative); font-weight: 500;">Alerts:</span>
+                        <span style="color: var(--color-text-base);">{{ .JSON.Int "last24Hours.total_alert" }}</span>
+                      </li>
+                      <li style="display: flex; gap: 1rem;">
+                        <span style="color: var(--color-negative); font-weight: 500;">Detections:</span>
+                        <span style="color: var(--color-text-base);">{{ .JSON.Int "last24Hours.total_detection" }}</span>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
 
           - type: hacker-news
             limit: 15

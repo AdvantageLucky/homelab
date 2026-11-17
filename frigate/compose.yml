@@ -1,0 +1,41 @@
+services:
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    stop_grace_period: 30s
+    shm_size: "512mb"
+
+    labels:
+      - "glance.name=Frigate"
+      - "glance.icon=di:frigate"
+      - "glance.description=NVR server"
+    ports:
+      - "127.0.0.1:${FRIGATE_UI_PORT}:8971"
+      - "127.0.0.1:${FRIGATE_GO2RTC_PORT}:8554"
+      - "127.0.0.1:${FRIGATE_WEBRTC_TCP_PORT}:8555"
+      - "127.0.0.1:${FRIGATE_WEBRTC_UDP_PORT}:8555/udp"
+    env_file:
+      - .env
+    environment:
+      TZ: "America/Mexico_City"
+    devices:
+      - /dev/dri
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - type: bind
+        source: "${FRIGATE_MEDIA_PATH}"
+        target: "/media/frigate"
+        bind:
+          create_host_path: false
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true

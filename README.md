@@ -17,9 +17,10 @@ All services run as Docker containers and remote access goes exclusively through
 | Service | Purpose |
 |-------------|-------------------------------|
 | Tailscale | Secure remote access (mesh VPN) |
+| Frigate | Self-Hosted NVR server |
 | Navidrome | Music streaming server |
-| Syncthing | File sync across devices |
 | Vaultwarden | Self-Hosted personal vault |
+| Syncthing | File sync across devices |
 | Photoview | Self-Hosted photo gallery |
 | Forgejo | Self-Hosted Git server |
 | Glance | Dashboard |

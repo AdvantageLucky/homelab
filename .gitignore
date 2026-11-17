@@ -27,3 +27,6 @@ forgejo/data
 
 # calibre-web-automated
 calibre-web-automated/config
+
+#frigate
+frigate/config/
