@@ -1,0 +1,19 @@
+services:
+  frigate-notify:
+    container_name: frigate-notify
+    image: ghcr.io/0x2142/frigate-notify:latest
+    restart: unless-stopped
+    labels:
+      - "glance.name=Frigate-Notify"
+      - "glance.icon=di:frigate"
+      - "glance.description=Frigate Notify Service"
+    environment:
+      TZ: "America/Mexico_City"
+    volumes:
+      - "./config/config.yml:/app/config.yml"
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true

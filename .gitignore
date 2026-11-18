@@ -30,6 +30,10 @@ calibre-web-automated/config
 
 #frigate
 frigate/config/
+frigate-notify/config/
 
 #uptime kuma
-uptime-kuma/data
+uptime-kuma/data/
+
+# mqtt server
+mosquitto/data/

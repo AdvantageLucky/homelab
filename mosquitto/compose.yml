@@ -1,0 +1,20 @@
+services:
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:2.0.23
+    restart: unless-stopped
+    labels:
+      - "glance.name=Mosquitto"
+      - "glance.icon=di:mqtt"
+      - "glance.description=MQTT server"
+    environment:
+      TZ: "America/Mexico_City"
+    volumes:
+      - "./config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"
+      - "./data:/mosquitto/data"
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true
