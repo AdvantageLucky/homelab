@@ -1,13 +1,13 @@
 # Personal Homelab
 Self-hosted infra on a *Lenovo ThinkCentre M720q*, using Docker for services and Tailscale for secure remote access.
 
-Original goal was to be able to listen to my own music, but then the goal was expanded: own my data, learn infraestructure/DevOps, hands-on, and have files, tools and music available eanywhere without exposing everything to the internet
+Original goal was to be able to listen to my own music, but then the goal was expanded: own my data, learn infrastructure/DevOps, hands-on, and have files, tools and music available anywhere without exposing everything to the internet
 
 ## Hardware
 - **Machine**: Lenovo ThinkCentre M720q Tiny
 - **CPU**: Intel Core i3-8100T (4 cores, 35W TDP)
 - **RAM**: 8 GB DDR4
-- **Storage**: 256 GB SATA SSD
+- **Storage**: 256 GB SATA SSD & 492 GB SATA HDD
 - **OS**: Debian 13 Trixie, headless
 
 ## Architecture 
@@ -17,12 +17,16 @@ All services run as Docker containers and remote access goes exclusively through
 | Service | Purpose |
 |-------------|-------------------------------|
 | Tailscale | Secure remote access (mesh VPN) |
+| Uptime Kuma | Uptime and service monitoring |
 | Frigate | Self-Hosted NVR server |
-| Navidrome | Music streaming server |
+| Frigate-Notify | Notification service for frigate |
 | Vaultwarden | Self-Hosted personal vault |
+| Navidrome | Music streaming server |
+| Calibre-Web-Automated | E-book library and automated downloader |
 | Syncthing | File sync across devices |
 | Photoview | Self-Hosted photo gallery |
 | Forgejo | Self-Hosted Git server |
+| Mosquitto | lightweight MQTT broker |
 | Glance | Dashboard |
 
 ## Backup
