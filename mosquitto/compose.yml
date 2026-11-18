@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     labels:
       - "glance.name=Mosquitto"
-      - "glance.icon=di:mqtt"
+      - "glance.icon=si:eclipsemosquitto"
       - "glance.description=MQTT server"
     environment:
       TZ: "America/Mexico_City"

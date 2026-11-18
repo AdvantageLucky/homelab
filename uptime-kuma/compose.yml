@@ -4,8 +4,8 @@ services:
     image: louislam/uptime-kuma:2
     restart: unless-stopped
     labels:
-      - "glance.name=Uptiem Kuma"
-      - "glance.icon=mdi:account-wrench"
+      - "glance.name=Uptime Kuma"
+      - "glance.icon=si:uptimekuma"
       - "glance.description=Monitoring tool"
     ports:
       - "127.0.0.1:${UPTIME_KUMA_UI_PORT}:3001" 
