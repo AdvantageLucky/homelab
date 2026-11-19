@@ -1,7 +1,10 @@
-# Personal Homelab
-Self-hosted infra on a *Lenovo ThinkCentre M720q*, using Docker for services and Tailscale for secure remote access.
+<h1 align="center"> Personal Homelab </h1>
+<img width="1366" height="768" alt="homelab" src="https://github.com/user-attachments/assets/9abbb0c7-bc69-473c-98f8-8dd201f62f92" />
 
-Original goal was to be able to listen to my own music, but then the goal was expanded: own my data, learn infrastructure/DevOps, hands-on, and have files, tools and music available anywhere without exposing everything to the internet
+<p align="center"> Self-hosted infra on a <em><b>Lenovo ThinkCentre M720q</b></em>, using Docker for services and Tailscale for secure remote access </p>
+
+## Purpose
+Original purpose was to be able to listen to my own music, but then the goal was expanded: own my data, learn infrastructure/DevOps, hands-on, and have files, tools and music available anywhere without exposing everything to the internet
 
 ## Hardware
 - **Machine**: Lenovo ThinkCentre M720q Tiny
