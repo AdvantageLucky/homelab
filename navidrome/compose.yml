@@ -19,7 +19,13 @@ services:
       ND_SUBSONIC_ARTISTPARTICIPATIONS: "true"
     volumes:
       - "./data:/data"
-      - "${HOME}/music:/music:ro"
+      - "${HOME}/music:/music/frequent:ro"
+      - type: bind
+        source: "${NEW_MUSIC_PATH}"
+        target: "/music/new_music"
+        read_only: true
+        bind:
+          create_host_path: false
     networks:
       - homelab
 
