@@ -156,7 +156,7 @@ pages:
                 <ul style="list-style: none; padding: 0; margin: 0; gap: 10px;">
                   <li>
                     <div style="padding-bottom: 1rem;">
-                      <a style="color: var(--color-primary); font-weight: bold; text-decoration: none;" href="https://${FRIGATE_URL}" target="_blank" rel="noreferrer" title="Frigate Dashboard">Last 24 Hours Activity</a>
+                      <a style="color: var(--color-primary); font-weight: bold; text-decoration: none;" href="${FRIGATE_URL_EXT}" target="_blank" rel="noreferrer" title="Frigate Dashboard">Last 24 Hours Activity</a>
                     </div>
                     <ul style="list-style: none; padding: 0; margin: 0; gap: 10px;">
                       <li style="display: flex; gap: 1rem; margin-bottom: 8px;">
